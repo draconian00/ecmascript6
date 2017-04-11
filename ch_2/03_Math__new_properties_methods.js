@@ -33,6 +33,7 @@ console.log(Math.log10(1000));	// 10을 밑으로 한 로그
 console.log(Math.log1p(0));			// log(1 + value)와 동일
 console.log(Math.expm1(0));			// Math.log1p(0)의 역
 console.log(Math.cbrt(8));			// 세제곱근 값
+console.log(Math.sqrt(4));
 console.log('------------------------ 산술 연산');
 
 

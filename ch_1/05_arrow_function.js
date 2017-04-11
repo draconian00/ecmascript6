@@ -44,12 +44,15 @@
 var object = {
 	f1: () => {
 		console.log(this);
+		console.log(this === object);
 		var f2 = () => { console.log(this); }
 		f2();
 		setTimeout(f2, 1000);
 	}
 }
 object.f1();
+
+console.log(global);
 
 /**
  * 화살표 함수와 일반 함수의 차이점

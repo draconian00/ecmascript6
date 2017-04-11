@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 // const 키워드
 // 값을 다시 할당할 수 없는 상수를 선언
@@ -16,7 +16,7 @@
 
 // pi = 12; // 읽기 전용 예외 발생 => TypeError: Assignment to constant variable.
 
-/******
+/**
 // 1.
 // 상수는 블록 스코프 변수라 let으로 선언한 변수와 스코프 규칙은 같다.
 const a = 12;	// 전역 접근 가능
@@ -25,7 +25,7 @@ function myFunction() {
 	console.log(a);
 
 	const b = 13;	// 함수 안에서 접근 가능
-	
+
 	if (true) {
 		const c = 14;	// 'if' 문 안에서 접근 가능
 		console.log(b);
@@ -33,14 +33,15 @@ function myFunction() {
 
 	console.log(c); // Error => ReferenceError: c is not defined
 }
-*****/
+*/
 
 // 2.
 // 상수를 통한 객체 참조
-// 변수에 객체를 할당하면 객체 자신이 아닌, 참조값(reference)이  저장되므로 상수에 객체를 할당하면 이객체의 참조값은 객체가 아닌, 상수에 대해 고정된다.
+// 변수에 객체를 할당하면 객체 자신이 아닌, 참조값(reference)이
+// 저장되므로 상수에 객체를 할당하면 이객체의 참조값은 객체가 아닌, 상수에 대해 고정된다.
 // 객체는 가변(mutable) 상태다.
 const a = {
-	'name': '민호'
+	'name': '민호',
 };
 
 console.log(a.name);
