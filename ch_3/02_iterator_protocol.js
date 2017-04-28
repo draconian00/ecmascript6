@@ -204,4 +204,105 @@ function yieldKeyword() {
   console.log(generator.next().value);
   console.log(generator.next().done);
 }
-yieldKeyword();
+// yieldKeyword();
+
+/**
+ * 14.04.28
+ */
+
+/**
+ * for...of loop
+ * 
+ * 이터러블 객체를 next()로 순회하는 건 불편하잖아?
+ * 그래서 ES6는 더 간편한 for...of 루프를 제공해준다고..!
+ * 
+ * for...of 루프는 이터러블 객체 값을 순회하는 구문이다.
+ */
+function forOfLoop() {
+  function* generator_function() {
+    yield 1;
+    yield 2;
+    yield 3;
+    yield 4;
+    yield 5;
+  }
+  let arr = [1,2,3];
+
+  for (let value of generator_function()) {
+    console.log(value);
+  }
+
+  for (let value of arr) {
+    console.log(value);
+  }
+}
+// forOfLoop();
+
+/**
+ * 꼬리 호출 최적화
+ * 
+ * 어떤 함수를 호출하면 메모리에 실행 스택을 생성하여 함수의 변수를 저장한다.
+ * 함수 안에서 다른 함수를 호출 어쩌구 저쩌구....
+ * 내부 함수의 실행 스택만큼 메모리를 더 점유한다는 게 문제다.
+ * 그렇다고 실행 스택을 교환하여 생성하면 CPU 시간이 소비.
+ * 중첩이 수백 단계에 이르면 자바스크립트 엔진이
+ * RangeError: Maximum call stack size exceeded 예외를 던지며 문제가 심각해진다.
+ * 
+ * 꼬리 호출(tail call)은 무조건 함수 끝(꼬리)에서 return 문을 실행하도록 함수를 호출하는 기법이다.
+ * 똑같은 함수 호출이 꼬리에 꼬리를 물고 이어지는, 꼬리 재귀(tail recursion)라는 재귀의 특수한 형태다.
+ * 꼬리 호출을 하면 실행 스택을 새로 만들지 않고 기존 스택을 재사용할 수 있기 때문에 부가적인 CPU 연산과
+ * 메모리 점유가 실제로 발생하지 않는다. 꼬리 호출 최적화는 꼬리 호출로 실행 스택을 재활용
+ * 
+ * ES6부터는 "use strict" 모드 실행하면 꼬리 호출 최적화를 자동으로 수행한다.
+ */
+function tailCallOpt() {
+  function _add(x, y) {
+    return x + y;
+  }
+  function add1(x, y) {
+    x = parseInt(x);
+    y = parseInt(y);
+
+    // 꼬리 호출
+    return _add(x, y);
+  }
+  function add2(x, y) {
+    x = parseInt(x);
+    y = parseInt(y);
+
+    // 꼬리 호출 아님
+    return 0 + _add(x, y);
+  }
+  console.log(add1(1, '1')); //2
+  console.log(add2(1, '2')); //3
+}
+// tailCallOpt();
+
+/**
+ * 꼬리 호출 아닌 코드를 꼬리 호출로 전환
+ * 
+ * 가급적 꼬리 호출이 아닌 코드는 꼬리 호출로 변경하여 최적화해야 한다.
+ */
+function tailCallConversion() {
+  function _add(x, y) {
+    return x + y;
+  }
+  function add(x, y) {
+    x = parseInt(x);
+    y = parseInt(y);
+
+    let result = _add(x, y);
+    return result;
+  }
+  console.log(add(1, '1'));
+  // 여기서 _add() 는 꼬리 호출이 아니므로 스택이 2개 쌓인다. 다음과 같이 간단히 꼬리 호출로 바꿀 수 있다.
+  function add_conversion(x, y) {
+    x = parseInt(x);
+    y = parseInt(y);
+
+    return _add(x, y);
+  }
+  console.log(add(1, '1'));
+  // 변수 result를 쓰지 말고 return 문으로 함수 호출을 즉시 반환한다. 꼬리 호출 전환 기법은 이밖에도 상당히 여러 가지다.
+}
+tailCallConversion();
